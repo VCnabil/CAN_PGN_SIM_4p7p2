@@ -144,9 +144,9 @@ namespace CAN_PGN_SIM_4p7p2.CustomUserControls.ConfigUC
                 for (int u=0; u< __howmanyBytes; u++)
                 {
                     VCPNGDB_UC_C temp = new VCPNGDB_UC_C(u);
-                    ____cursorX = __margin + (temp._Width + __margin) * u;
-                    _TOTALHGTHEREQUIRED = temp._Height + __Yoffset_toClearSpace;
-                    _TOTALWDTHEREQUIRED = ____cursorX + temp._Width + __margin;
+                    ____cursorX = __margin + (temp.WidthControl + __margin) * u;
+                    _TOTALHGTHEREQUIRED = temp.HeightControl + __Yoffset_toClearSpace;
+                    _TOTALWDTHEREQUIRED = ____cursorX + temp.WidthControl + __margin;
                     temp.Location = new Point(____cursorX, __Yoffset_toClearSpace);
                     _myByteTypes_UCs.Add(u,temp);
                     temp.BlueBrintUpdatedEvent += ON_oneOfMuUc_BPUpdated;
