@@ -36,7 +36,7 @@ namespace CAN_PGN_SIM_4p7p2.CustomUserControls.ConfigUC
         int __minimum = 0;
         int __maximum = 0;
         int __prim = 0;
-        int __sec = 0;
+        int __sec = 6;
         int __def = 0;
         string[] __bitDefinitions;
         public VCPNGDB_UC_C(int argid)
@@ -168,25 +168,36 @@ namespace CAN_PGN_SIM_4p7p2.CustomUserControls.ConfigUC
             {
                 __prim = 8;
             }
-            if (__Lettertype == "C" || __Lettertype == "E") { 
-                __sec= __prim + 1;
-                if (__sec > 8)
-                {
-                    __sec = 8;
-                }
 
-                if (__sec == __prim && __prim > 1)
-                {
-                    MessageBox.Show("Could be problematic , fix later ");
-                    return;
-                }
-            }
-            else
+            if (__prim < 7)
             {
-                __sec = __prim;
+                __sec = __prim + 1;
             }
+            else {
+                __sec = 7;
+            }
+
+
+            //if (__Lettertype == "C" || __Lettertype == "E") { 
+            //    __sec= __prim + 1;
+            //    if (__sec > 8)
+            //    {
+            //        __sec = 8;
+            //    }
+
+            //    if (__sec == __prim && __prim > 1)
+            //    {
+            //        MessageBox.Show("Could be problematic , fix later ");
+            //        return;
+            //    }
+            //}
+            //else
+            //{
+            //    __sec = __prim;
+            //}
 
             lbl_secVal.Text = __sec.ToString();
+            
 
         }
         private void Avalue_has_Changed(object sender, EventArgs e)
@@ -242,11 +253,8 @@ namespace CAN_PGN_SIM_4p7p2.CustomUserControls.ConfigUC
             tb_prim.Text = __prim.ToString();
             tb_Max.Text = __maximum.ToString();
             tb_defval.Text = __def.ToString();
-            __sec = __prim + 1;
-            if (__sec > 8)
-            {
-                __sec = 8;
-            }
+ 
+           
 
             lbl_secVal.Text = __sec.ToString();
 
@@ -266,36 +274,10 @@ namespace CAN_PGN_SIM_4p7p2.CustomUserControls.ConfigUC
             DB_BluePrint._muDefVal = __def;
             int.TryParse(tb_prim.Text, out __prim);
             DB_BluePrint._myByteIndexInPayload = __prim;
-            int.TryParse(lbl_sectext.Text, out __sec);
-            DB_BluePrint._myByteIndexInPayload_secondary = __sec;
+            int.TryParse(lbl_secVal.Text, out __sec);
+            DB_BluePrint._my_sec_index = __sec;
             DB_BluePrint.bits_desc = __bitDefinitions.ToList();
         }
-        void Populated_BP_WithEVENT()
-        {
-            DB_BluePrint._myType = __Lettertype;
-            DB_BluePrint._myDescription = __description;
-            DB_BluePrint._myMin = __minimum;
-            int.TryParse(tb_Max.Text, out __maximum);
-            DB_BluePrint._myMax = __maximum;
-            int.TryParse(tb_defval.Text, out __def);
-            DB_BluePrint._muDefVal = __def;
-            int.TryParse(tb_prim.Text, out __prim);
-            DB_BluePrint._myByteIndexInPayload = __prim;
-            int.TryParse(lbl_sectext.Text, out __sec);
-            DB_BluePrint._myByteIndexInPayload_secondary = __sec;
-            DB_BluePrint.bits_desc = __bitDefinitions.ToList();
-            if (BlueBrintUpdatedEvent != null)
-            {
-                BlueBrintUpdatedEvent.Invoke(this, new EventArgs());
-                //MessageBox.Show("Event has subscribers, raising event.");
-                // return;
-            }
-            else
-            {
-                MessageBox.Show("No subscribers to BlueBrintUpdatedEvent.");
-                return;
-            }
-        }
-       
+     
     }
 }

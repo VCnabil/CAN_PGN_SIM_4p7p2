@@ -7,19 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
- 
 
 namespace CAN_PGN_SIM_4p7p2
 {
-    public partial class Form1 : Form
+    public partial class Form0_Main : Form
     {
-  
-        public Form1()
+        public Form0_Main()
         {
             InitializeComponent();
-
-        
         }
- 
     }
 }

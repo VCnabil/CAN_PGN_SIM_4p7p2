@@ -16,7 +16,7 @@ namespace CAN_PGN_SIM_4p7p2
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new Form0_Main());
         }
     }
 }

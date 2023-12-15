@@ -25,7 +25,7 @@ namespace CAN_PGN_SIM_4p7p2.UiBuilders
 
         public int WidthFINAL { get { return TotalWidth; } }
         public int HeightFINAL { get { return TotalHeight; } }
-        public Builder_UI_JSONWRITE(Form1 argForm1, FlowLayoutPanel argpanel,int arg_howmanyRows) {
+        public Builder_UI_JSONWRITE(Form1_JsonBPMaker argForm1, FlowLayoutPanel argpanel,int arg_howmanyRows) {
             List_BP_ToSerialize = new List<VCPGN_BP>();
             List_of_UCrows  = new List<VCPGN_UC_C>();
 

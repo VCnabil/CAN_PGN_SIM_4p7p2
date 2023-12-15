@@ -1,0 +1,150 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace CAN_PGN_SIM_4p7p2.CustomUserControls.SimulaUC
+{
+    public partial class Type_D_8bitLabel_UC : UserControl, IgenericUcByte
+    {
+        char _myType = 'D';
+        int _myByteIndexInPayload;
+        int _myByteIndexInPayload_secondary;
+        byte[] my2bytes;
+        int _myMin;
+        int _myMax;
+        int _myMidVal;
+        bool _isHexFormat;
+        int _cur_INT_Value;
+        CheckBox[] myCbs;
+        int _Default_Val;
+        VC_PGN_ColCtrlr_UC my_refTOCTRL;
+        public Type_D_8bitLabel_UC()
+        {
+            InitializeComponent();
+            tb_RawNum.TextChanged += Tb_RawNum_TextChanged;
+            cb_HEX.CheckedChanged += new EventHandler(cb_HEX_CheckedChanged);
+            btn_reset.Click += new EventHandler(btn_reset_Click);
+        }
+
+        #region UI Events
+        private void Tb_RawNum_TextChanged(object sender, EventArgs e)
+        {
+            int number = 0;
+            bool result = int.TryParse(tb_RawNum.Text, out number);
+
+            if (result)
+            {
+
+                _cur_INT_Value = number;
+                Update_Bval_label();
+                Update_my2bytes();
+            }
+            else
+            {
+                _cur_INT_Value = 0;
+            }
+        }
+        void btn_reset_Click(object sender, EventArgs e)
+        {
+            _cur_INT_Value = _Default_Val;
+            Update_Bval_label();
+            Update_my2bytes();
+        }
+        private void cb_HEX_CheckedChanged(object sender, EventArgs e)
+        {
+            _isHexFormat = cb_HEX.Checked;
+            Update_Bval_label();
+        }
+
+        #endregion
+
+        #region Interface implementation
+        public void Init_genericBytetype(string argDescription, int arg_MyByteIndexInPayload, int arg_mysecondary, VC_PGN_ColCtrlr_UC arg_refTOCTRL, int argMin, int argMax, int argDefaltval)
+        {
+            _myMin = 0;
+            _myMax = 0;
+            _myMidVal = 0;
+            my2bytes = new byte[2];
+            _isHexFormat = cb_HEX.Checked;
+            my_refTOCTRL = arg_refTOCTRL;
+            _myByteIndexInPayload = arg_MyByteIndexInPayload;
+            _myByteIndexInPayload_secondary = arg_MyByteIndexInPayload; //i only have one byte so my secondary index is the same as my primary
+            this.lbl_Desc.Text = argDescription;
+            // i am an 8 bit byte, I always have a min of 0 and a max of 255
+            _myMin = 0;
+            _myMax = argMax;
+            _myMidVal = (_myMax - _myMin) / 2;
+            _cur_INT_Value = _Default_Val;
+            tb_RawNum.Text = _cur_INT_Value.ToString();
+            Update_Bval_label();
+            Update_my2bytes();
+        }
+        public byte[] getMy2Bytes()
+        {
+            return my2bytes;
+        }
+
+        public char get_myType()
+        {
+            return _myType;
+        }
+
+        public int Get_My_ByteA_Index()
+        {
+            return _myByteIndexInPayload;
+        }
+
+        public int Get_My_ByteB_Index()
+        {
+            return _myByteIndexInPayload_secondary;
+        }
+
+        public void set_myBits_ifApplies(string[] argBitDescriptions)
+        {
+            //if (argBitDescriptions.Length == 8)
+            //{
+            //    for (int i = 0; i < argBitDescriptions.Length; i++)
+            //    {
+            //        if (string.IsNullOrEmpty(argBitDescriptions[i]))
+            //        {
+            //            myCbs[i].Text = "";
+            //            myCbs[i].Enabled = false;
+            //        }
+            //        else
+            //        {
+            //            myCbs[i].Enabled = true;
+            //            myCbs[i].Text = "bit " + i.ToString() + " " + argBitDescriptions[i];
+            //        }
+            //    }
+            //}
+        }
+
+        #endregion
+
+        #region Local Methods
+        void Update_Bval_label()
+        {
+            if (_isHexFormat)
+            {
+                lbl_Bval.Text = _cur_INT_Value.ToString("X2");
+            }
+            else
+            {
+                lbl_Bval.Text = _cur_INT_Value.ToString("D3");
+            }
+        }
+        void Update_my2bytes()
+        {
+            my2bytes[0] = (byte)_cur_INT_Value;
+            my2bytes[1] = (byte)_cur_INT_Value;
+            my_refTOCTRL.PlugYourByteHere(_myByteIndexInPayload, my2bytes[0], _myType, _myByteIndexInPayload_secondary, my2bytes[1]);
+        }
+        #endregion
+    }
+}
