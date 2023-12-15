@@ -17,8 +17,10 @@ namespace CAN_PGN_SIM_4p7p2
         bool _loopIsRunning;
         Object_builderReader object_BuilderReader;
         CanManager canManager;
-        public Form2_CANSIM()
+        string _filename_FORM2CANSIM= "sameFile2apps";
+        public Form2_CANSIM(string argFilename)
         {
+            _filename_FORM2CANSIM= argFilename;
             InitializeComponent();
             canManager = new CanManager();
             canManager.ListChannels();
@@ -27,7 +29,7 @@ namespace CAN_PGN_SIM_4p7p2
             canManager.GoOnBus();
 
 
-            object_BuilderReader = new Object_builderReader(this, this.flowLayoutPanel1);
+            object_BuilderReader = new Object_builderReader(this, this.flowLayoutPanel1, _filename_FORM2CANSIM);
 
             timer1_Loop.Tick += Timer1_Loop_Tick;
             timer1_Loop.Interval = 200;

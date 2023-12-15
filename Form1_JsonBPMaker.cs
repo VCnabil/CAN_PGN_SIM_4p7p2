@@ -16,9 +16,11 @@ namespace CAN_PGN_SIM_4p7p2
         int _width = 1300;
         int _height = 1000;
         int _howmanyRowsTomake = 1;
+        string _filename_FORM1BPMAKER = "sameFile2apps";
         Builder_UI_JSONWRITE test;
-        public Form1_JsonBPMaker()
+        public Form1_JsonBPMaker(string argFilename)
         {
+            _filename_FORM1BPMAKER = argFilename;
             InitializeComponent();
             textBox1.TextChanged += TextBox1_TextChanged;
             button1.Click += Button1_Click;
@@ -37,7 +39,7 @@ namespace CAN_PGN_SIM_4p7p2
         {
             if (_howmanyRowsTomake > 0)
             {
-                test = new Builder_UI_JSONWRITE(this, this.flowLayoutPanel1, _howmanyRowsTomake);
+                test = new Builder_UI_JSONWRITE(this, this.flowLayoutPanel1, _howmanyRowsTomake, _filename_FORM1BPMAKER);
                 _width = test.WidthFINAL;
                 _height = test.HeightFINAL;
 

@@ -22,10 +22,11 @@ namespace CAN_PGN_SIM_4p7p2.UiBuilders
         int RowHeight = 0;
         int TotalWidth = 0;
         int TotalHeight = 0;
-
+        string _filename_objbuilder = "sameFile2apps";
         public int WidthFINAL { get { return TotalWidth; } }
         public int HeightFINAL { get { return TotalHeight; } }
-        public Builder_UI_JSONWRITE(Form1_JsonBPMaker argForm1, FlowLayoutPanel argpanel,int arg_howmanyRows) {
+        public Builder_UI_JSONWRITE(Form1_JsonBPMaker argForm1, FlowLayoutPanel argpanel,int arg_howmanyRows, string argfilenale) {
+            _filename_objbuilder = argfilenale;
             List_BP_ToSerialize = new List<VCPGN_BP>();
             List_of_UCrows  = new List<VCPGN_UC_C>();
 
@@ -52,7 +53,7 @@ namespace CAN_PGN_SIM_4p7p2.UiBuilders
 
         public void MakeJson() {
 
-
+            string path_filenameFromMain= "C:\\___Root_VCI_Projects\\AL_SEER\\SAVEDFILES\\newday\\__" + _filename_objbuilder + ".json";
             string pathSameFile = "C:\\___Root_VCI_Projects\\AL_SEER\\SAVEDFILES\\newday\\__sameFile.json";
             string path_pre = "C:\\___Root_VCI_Projects\\AL_SEER\\SAVEDFILES\\newday\\filetest_";
 
@@ -66,7 +67,7 @@ namespace CAN_PGN_SIM_4p7p2.UiBuilders
 
             string json = JsonConvert.SerializeObject(List_BP_ToSerialize.ToArray(), Formatting.Indented);
 
-            System.IO.File.WriteAllText(pathSameFile, json);
+            System.IO.File.WriteAllText(path_filenameFromMain, json);
 
             //string json = JsonConvert.SerializeObject(List_BP_ToSerialize.ToArray());
 

@@ -19,6 +19,7 @@ namespace CAN_PGN_SIM_4p7p2.UiBuilders
         int __margin = 8;
         int TotalWidth = 0;
         int TotalHeight = 0;
+        string _filename_objbuilder = "sameFile2apps";
 
         public int WidthFINAL { get { return TotalWidth; } }
         public int HeightFINAL { get { return TotalHeight; } }
@@ -33,11 +34,13 @@ namespace CAN_PGN_SIM_4p7p2.UiBuilders
         }
 
         List<VCPGN_BP> mylistOfObjs;
-        public Object_builderReader(Form2_CANSIM argform, FlowLayoutPanel argpanel )
+        public Object_builderReader(Form2_CANSIM argform, FlowLayoutPanel argpanel, string argfilename )
         {
+            _filename_objbuilder = argfilename;
             ActivePgnsOnScreen = new Dictionary<int, VC_PGN_ColCtrlr_UC>();
-            string pathSameFile = "C:\\___Root_VCI_Projects\\AL_SEER\\SAVEDFILES\\newday\\__sameFile.json";
-            mylistOfObjs = LoadJsonFile(pathSameFile);
+            string path_filenameFromMain = "C:\\___Root_VCI_Projects\\AL_SEER\\SAVEDFILES\\newday\\__" + _filename_objbuilder + ".json";
+            //string pathSameFile = "C:\\___Root_VCI_Projects\\AL_SEER\\SAVEDFILES\\newday\\__sameFile.json";
+            mylistOfObjs = LoadJsonFile(path_filenameFromMain);
            // mylistOfObjs = LoadJsonFile("C:\\___Root_VCI_Projects\\AL_SEER\\SAVEDFILES\\test5.json");
             int listsize = mylistOfObjs.Count;
 
