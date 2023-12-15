@@ -52,6 +52,8 @@ namespace CAN_PGN_SIM_4p7p2.UiBuilders
 
         public void MakeJson() {
 
+
+            string pathSameFile = "C:\\___Root_VCI_Projects\\AL_SEER\\SAVEDFILES\\newday\\__sameFile.json";
             string path_pre = "C:\\___Root_VCI_Projects\\AL_SEER\\SAVEDFILES\\newday\\filetest_";
 
             string path_post = ".json";
@@ -62,9 +64,14 @@ namespace CAN_PGN_SIM_4p7p2.UiBuilders
                 List_BP_ToSerialize.Add(List_of_UCrows[x].GET_BLUEPRINT()); 
             }
 
-            string json = JsonConvert.SerializeObject(List_BP_ToSerialize.ToArray());
+            string json = JsonConvert.SerializeObject(List_BP_ToSerialize.ToArray(), Formatting.Indented);
 
-            System.IO.File.WriteAllText(path, json);
+            System.IO.File.WriteAllText(pathSameFile, json);
+
+            //string json = JsonConvert.SerializeObject(List_BP_ToSerialize.ToArray());
+
+            //System.IO.File.WriteAllText(path, json);
+            List_BP_ToSerialize = new List<VCPGN_BP>();
         }
     }
 }

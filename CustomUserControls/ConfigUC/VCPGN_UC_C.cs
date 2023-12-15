@@ -149,7 +149,7 @@ namespace CAN_PGN_SIM_4p7p2.CustomUserControls.ConfigUC
                     _TOTALWDTHEREQUIRED = ____cursorX + temp.WidthControl + __margin;
                     temp.Location = new Point(____cursorX, __Yoffset_toClearSpace);
                     _myByteTypes_UCs.Add(u,temp);
-                    temp.BlueBrintUpdatedEvent += ON_oneOfMuUc_BPUpdated;
+    //                temp.BlueBrintUpdatedEvent += ON_oneOfMuUc_BPUpdated;
                     this.Controls.Add(temp);
                 }
                 _width = _TOTALWDTHEREQUIRED;
@@ -174,11 +174,6 @@ namespace CAN_PGN_SIM_4p7p2.CustomUserControls.ConfigUC
                 _myVCPGN_BP.ByteTypes.Add(temp._myVCPGNDB_BP);
             }
 
-
-
-            //int tempid= ((VCPNGDB_UC_C)sender)._ID_uc;
-
-            //lbl_debug1.Text= _myByteTypes_UCs.Values.ElementAt(tempid)._myVCPGNDB_BP._myType;
         }
         private void Tb_DESC_TextChanged(object sender, EventArgs e)
         {
@@ -197,7 +192,7 @@ namespace CAN_PGN_SIM_4p7p2.CustomUserControls.ConfigUC
             _myVCPGN_BP.ByteTypes = new List<VCPGNDB_BP>();
             foreach (VCPNGDB_UC_C temp in _myByteTypes_UCs.Values)
             {
-                _myVCPGN_BP.ByteTypes.Add(temp._myVCPGNDB_BP);
+                _myVCPGN_BP.ByteTypes.Add(temp.GET_OBJECT());
             }
 
             return _myVCPGN_BP;

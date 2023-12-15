@@ -32,7 +32,7 @@ namespace CAN_PGN_SIM_4p7p2
         private void Btn_MakeJsonFile_Click(object sender, EventArgs e)
         {
             test.MakeJson();
-            btn_MakeJsonFile.Enabled = false;
+            //btn_MakeJsonFile.Enabled = false;
         }
 
         private void Button1_Click(object sender, EventArgs e)

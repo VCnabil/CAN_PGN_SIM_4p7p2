@@ -17,6 +17,11 @@ namespace CAN_PGN_SIM_4p7p2.CustomUserControls.ConfigUC
         public int ID_uc => _uniqID;
         public event EventHandler BlueBrintUpdatedEvent;
         VCPGNDB_BP DB_BluePrint;
+        public VCPGNDB_BP GET_OBJECT() {
+
+            Populate_BP_0();
+            return DB_BluePrint;
+        }
         public VCPGNDB_BP _myVCPGNDB_BP => DB_BluePrint;
         #region Dimenssions
         int _width = 0;
@@ -63,10 +68,10 @@ namespace CAN_PGN_SIM_4p7p2.CustomUserControls.ConfigUC
             //whencombobox is used 
             comboBox_types.SelectedIndexChanged += ComboBox_types_SelectedIndexChanged;
             //when tb_Desc value changes , run event 
-            tb_Desc.TextChanged += Avalue_has_Changed;
-            tb_Max.TextChanged += Avalue_has_Changed;
-            tb_defval.TextChanged += Avalue_has_Changed;
-            tb_prim.TextChanged += Avalue_has_Changed;
+            tb_Desc.TextChanged += DEsc_has_Changed;
+            tb_Max.TextChanged += Max_has_Changed;
+            tb_defval.TextChanged += Def_has_Changed;
+            tb_prim.TextChanged += Prim_has_Changed;
             tb_bit0.TextChanged += Avalue_has_Changed;
             tb_bit1.TextChanged += Avalue_has_Changed;
             tb_bit2.TextChanged += Avalue_has_Changed;
@@ -82,22 +87,115 @@ namespace CAN_PGN_SIM_4p7p2.CustomUserControls.ConfigUC
             __def = 0;
             __sec = 0;
             DB_BluePrint = new VCPGNDB_BP();
+           
             UpdateValues_and_UI();
-            Extract__values_();
             Populate_BP_0();
         }
         #region UIevents
         private void ComboBox_types_SelectedIndexChanged(object sender, EventArgs e)
         {
             lbl_ctrltype.Text = list_ctrlTypes[comboBox_types.SelectedIndex];
+            Display__vals();
+            if (comboBox_types.SelectedIndex == 0) { __Lettertype = "A"; }
+            if (comboBox_types.SelectedIndex == 1) { __Lettertype = "B"; }
+            if (comboBox_types.SelectedIndex == 2) { __Lettertype = "C"; }
+            if (comboBox_types.SelectedIndex == 3) { __Lettertype = "D"; }
+            if (comboBox_types.SelectedIndex == 4) { __Lettertype = "E"; }
+
+
             UpdateValues_and_UI();
-            Extract__values_();
-            Populated_BP_WithEVENT();
+        }
+        private void DEsc_has_Changed(object sender, EventArgs e)
+        {
+            __description = tb_Desc.Text;
+        }
+        private void Max_has_Changed(object sender, EventArgs e)
+        {
+            int.TryParse(tb_Max.Text, out __maximum);
+            if (__maximum < 3)
+            {
+                __maximum = 3;
+            }
+         
+
+            if (__Lettertype == "C" || __Lettertype == "E") {
+                if (__maximum > 0xFFFF)
+                {
+                    __maximum = 0xFFFF;
+                }
+                if (__def > __maximum/2)
+                {
+                    __def = __maximum/2;
+                }
+            }
+            else
+            {
+                if (__maximum > 255)
+                {
+                    __maximum = 255;
+                }
+                if (__def > __maximum)
+                {
+                    __def = __maximum;
+                }
+            }
+
+            tb_defval.Text = __def.ToString();
+
+
+
+        }
+        private void Def_has_Changed(object sender, EventArgs e)
+        {
+            int.TryParse(tb_defval.Text, out __def);
+            if (__def < 0)
+            {
+                __def = 0;
+            }
+            if (__def > __maximum)
+            {
+                __def = __maximum;
+            }
+        }
+        private void Prim_has_Changed(object sender, EventArgs e)
+        {
+            int.TryParse(tb_prim.Text, out __prim);
+            if (__prim < 1)
+            {
+                __prim = 1;
+            }
+            if (__prim > 8)
+            {
+                __prim = 8;
+            }
+            if (__Lettertype == "C" || __Lettertype == "E") { 
+                __sec= __prim + 1;
+                if (__sec > 8)
+                {
+                    __sec = 8;
+                }
+
+                if (__sec == __prim && __prim > 1)
+                {
+                    MessageBox.Show("Could be problematic , fix later ");
+                    return;
+                }
+            }
+            else
+            {
+                __sec = __prim;
+            }
+
+            lbl_secVal.Text = __sec.ToString();
+
         }
         private void Avalue_has_Changed(object sender, EventArgs e)
         {
-            Extract__values_();
-            Populated_BP_WithEVENT();
+            //  Save the strings from tetxboxes 
+            // __array  <------- to the textboxes
+            for (int x = 0; x < 8; x++) { __bitDefinitions[x] = tb_bit_arra[x].Text; }
+           
+             
         }
         #endregion
         void UpdateValues_and_UI()
@@ -138,60 +236,24 @@ namespace CAN_PGN_SIM_4p7p2.CustomUserControls.ConfigUC
                 tableLayoutPanel1.Hide();
             }
         }
-        void Extract__values_()
-        {
-            if (comboBox_types.SelectedIndex == 0) { __Lettertype = "A"; }
-            if (comboBox_types.SelectedIndex == 1) { __Lettertype = "B"; }
-            if (comboBox_types.SelectedIndex == 2) { __Lettertype = "C"; }
-            if (comboBox_types.SelectedIndex == 3) { __Lettertype = "D"; }
-            if (comboBox_types.SelectedIndex == 4) { __Lettertype = "E"; }
-            __description = tb_Desc.Text;
-            __minimum = 0;
-            int.TryParse(tb_Max.Text, out __maximum);
-            if (__maximum < 3)
-            {
-                __maximum = 3;
-            }
-            if (__maximum > 0xFFFF)
-            {
-                __maximum = 0xFFFF;
-            }
-            int.TryParse(tb_defval.Text, out __def);
-            if (__def < 0)
-            {
-                __def = 0;
-            }
-            if (__def > __maximum)
-            {
-                __def = __maximum;
-            }
-            //  Save the strings from tetxboxes 
-            // __array  <------- to the textboxes
-            for (int x = 0; x < 8; x++) { __bitDefinitions[x] = tb_bit_arra[x].Text; }
-            int.TryParse(tb_prim.Text, out __prim);
-            if (__prim < 1)
-            {
-                __prim = 1;
-            }
-            if (__prim > 8)
-            {
-                __prim = 8;
-            }
-            int.TryParse(lbl_secVal.Text, out __sec);
-            if (__sec < 1)
-            {
-                __sec = 1;
-            }
+    
+
+        void Display__vals() {
+            tb_prim.Text = __prim.ToString();
+            tb_Max.Text = __maximum.ToString();
+            tb_defval.Text = __def.ToString();
             __sec = __prim + 1;
             if (__sec > 8)
             {
                 __sec = 8;
             }
-            if (__sec == __prim && __prim > 1)
-            {
-                MessageBox.Show("Could be problematic , fix later ");
-                return;
-            }
+
+            lbl_secVal.Text = __sec.ToString();
+
+            tb_Desc.Text = __description;
+
+            for (int x = 0; x < 8; x++) { tb_bit_arra[x].Text=__bitDefinitions[x] ; }
+
         }
         void Populate_BP_0()
         {
@@ -234,21 +296,6 @@ namespace CAN_PGN_SIM_4p7p2.CustomUserControls.ConfigUC
                 return;
             }
         }
-        #region Handle Case A B C D E
-        void CleanAndDisplay_Prim()
-        {
-            //***************************    handle Primarybyte index Elements
-            int.TryParse(tb_prim.Text, out __prim);
-            if (__prim < 1)
-            {
-                __prim = 1;
-            }
-            if (__prim > 8)
-            {
-                __prim = 8;
-            }
-            tb_prim.Text = __prim.ToString();
-        }
-        #endregion
+       
     }
 }
